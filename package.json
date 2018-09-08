@@ -1,0 +1,46 @@
+{
+  "name": "webpack-external-plugin",
+  "version": "0.1.0",
+  "description": "webpack external deps load plugin",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "index.js",
+    "src",
+    "LICENSE",
+    "package.json",
+    "README.md",
+    "yarn.lock"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yeliex/webpack-external-plugin.git"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "keywords": [
+    "webpack",
+    "external",
+    "cdn"
+  ],
+  "author": "yeliex <yeliex@yeliex.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yeliex/webpack-external-plugin/issues"
+  },
+  "homepage": "https://github.com/yeliex/webpack-external-plugin#readme",
+  "dependencies": {
+    "lodash": "^4.17.10",
+    "read-package-tree": "^5.2.1",
+    "tapable": "^1.0.0"
+  },
+  "devDependencies": {
+    "webpack": "^4.0.0"
+  },
+  "peerDependencies": {
+    "webpack": "^4.0.0"
+  }
+}
