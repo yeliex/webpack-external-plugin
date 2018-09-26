@@ -52,16 +52,28 @@ const recursivePackage = ({ children = [] }, versions = {}) => {
   return versions;
 };
 
+let versions = null;
+let versionPromise = null;
+
 exports.getVersions = () => {
-  return new Promise((rec, rej) => {
+  if (versions) {
+    return versions;
+  }
+  if (versionPromise) {
+    return versionPromise;
+  }
+  versionPromise = new Promise((rec, rej) => {
     ReadPackageTree(cwd, (err, data) => {
       if (err) {
         rej(err);
         return;
       }
-      rec(recursivePackage(data));
+      versions = recursivePackage(data);
+
+      rec(versions);
     });
   });
+  return versionPromise;
 };
 
 // webpack/lib/TemplatedPathPlugin.js#93
