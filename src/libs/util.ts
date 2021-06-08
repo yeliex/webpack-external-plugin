@@ -1,13 +1,13 @@
-const ReadPackageTree = require('read-package-tree');
+import * as ReadPackageTree from 'read-package-tree';
 
-const REGEXP_HASH = /\[hash(?::(\d+))?\]/gi;
-const REGEXP_NAME = /\[name\]/gi;
-const REGEXP_ID = /\[id\]/gi;
-const REGEXP_PACKAGE = /\[package\]/gi;
-const REGEXP_VERSION = /\[version\]/gi;
+const REGEXP_HASH = /\[hash(?::(\d+))?]/gi;
+const REGEXP_NAME = /\[name]/gi;
+const REGEXP_ID = /\[id]/gi;
+const REGEXP_PACKAGE = /\[package]/gi;
+const REGEXP_VERSION = /\[version]/gi;
 
-const withHashLength = (replacer, handlerFn) => {
-  const fn = (match, hashLength, ...args) => {
+const withHashLength = (replacer, handlerFn?) => {
+  return (match, hashLength, ...args) => {
     const length = hashLength && parseInt(hashLength, 10);
     if (length && handlerFn) {
       return handlerFn(length);
@@ -15,11 +15,10 @@ const withHashLength = (replacer, handlerFn) => {
     const hash = replacer(match, hashLength, ...args);
     return length ? hash.slice(0, length) : hash;
   };
-  return fn;
 };
 
-const getReplacer = (value, allowEmpty) => {
-  const fn = (match, ...args) => {
+const getReplacer = (value, allowEmpty?) => {
+  return (match, ...args) => {
     // last argument in replacer is the entire input string
     const input = args[args.length - 1];
     if (value === null || value === undefined) {
@@ -33,7 +32,6 @@ const getReplacer = (value, allowEmpty) => {
       return `${value}`;
     }
   };
-  return fn;
 };
 
 const cwd = process.cwd();
@@ -55,7 +53,7 @@ const recursivePackage = ({ children = [] }, versions = {}) => {
 let versions = null;
 let versionPromise = null;
 
-exports.getVersions = () => {
+export const getVersions = () => {
   if (versions) {
     return versions;
   }
@@ -77,14 +75,14 @@ exports.getVersions = () => {
 };
 
 // webpack/lib/TemplatedPathPlugin.js#93
-exports.getFileName = (path, { name, hash, id } = {}) => {
+export const getFileName = (path, { name, hash, id } = {}) => {
   return path
     .replace(REGEXP_HASH, withHashLength(getReplacer(hash)))
     .replace(REGEXP_ID, getReplacer(id))
     .replace(REGEXP_NAME, getReplacer(name));
 };
 
-exports.getCDNPath = (path, { name, version }) => {
+export const getCDNPath = (path, { name, version }) => {
   return typeof path === 'function' ? path(name, version) : (
     path
       .replace(REGEXP_PACKAGE, getReplacer(name))
@@ -92,6 +90,6 @@ exports.getCDNPath = (path, { name, version }) => {
   );
 };
 
-exports.getChunkPath = (publicPath, { name, showHash, hash }) => {
+export const getChunkPath = (publicPath, { name, showHash, hash }) => {
   return `${publicPath}${name}${showHash ? `?${hash}` : ''}`;
 };

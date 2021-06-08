@@ -1,13 +1,13 @@
-const _ = require('lodash');
-const assert = require('assert');
+import { defaults } from 'lodash';
+import * as assert from 'assert';
 const createHash = require('webpack/lib/util/createHash');
-const defaultConfig = require('./libs/default-config');
-const loader = require('./libs/loader');
-const { getFileName, getCDNPath, getChunkPath, getVersions } = require('./libs/util');
+import defaultConfig from './libs/default-config';
+import loaderTemplate from './libs/loader-template';
+import { getFileName, getCDNPath, getChunkPath, getVersions } from './libs/util';
 
 class WebpackExternalPlugin {
   constructor(options = {}) {
-    this.options = _.defaults(options, defaultConfig);
+    this.options = defaults(options, defaultConfig);
     this.chunks = {};
   }
 
@@ -37,7 +37,7 @@ class WebpackExternalPlugin {
     chunk.ids = [chunk.id];
 
     const modules = this.chunks[name];
-    const source = loader([...modules, ...(this.options.externals || [])]);
+    const source = loaderTemplate([...modules, ...(this.options.externals || [])]);
 
     const chunkHash = createHash(hashFunction);
     if (hashSalt) {
