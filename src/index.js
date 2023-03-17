@@ -2,7 +2,6 @@ const _ = require('lodash');
 const assert = require('assert');
 const createHash = require('webpack/lib/util/createHash');
 const defaultConfig = require('./libs/default-config');
-const loader = require('./libs/loader');
 const { getFileName, getCDNPath, getChunkPath, getVersions } = require('./libs/util');
 
 class WebpackExternalPlugin {
@@ -37,7 +36,7 @@ class WebpackExternalPlugin {
     chunk.ids = [chunk.id];
 
     const modules = this.chunks[name];
-    const source = loader([...modules, ...(this.options.externals || [])]);
+    const source = this.options.loader([...modules, ...(this.options.externals || [])]);
 
     const chunkHash = createHash(hashFunction);
     if (hashSalt) {
