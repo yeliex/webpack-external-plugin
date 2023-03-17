@@ -1,4 +1,4 @@
-const defaultLoader = require('./libs/loader');
+const defaultLoader = require('./loader');
 
 module.exports = {
   filename: 'load-[name].js',
