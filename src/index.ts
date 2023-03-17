@@ -1,9 +1,10 @@
 import { defaults } from 'lodash';
 import * as assert from 'assert';
-const createHash = require('webpack/lib/util/createHash');
+import createHash from 'webpack/lib/util/createHash';
 import defaultConfig from './libs/default-config';
 import loaderTemplate from './libs/loader-template';
 import { getFileName, getCDNPath, getChunkPath, getVersions } from './libs/util';
+import * as Webpack from 'webpack';
 
 class WebpackExternalPlugin {
   constructor(options = {}) {
@@ -11,11 +12,11 @@ class WebpackExternalPlugin {
     this.chunks = {};
   }
 
-  getCDNUrl(name, version) {
+  getCDNUrl(name: string, version: string) {
     return getCDNPath(this.options.cdnPath, { name, version });
   };
 
-  getPublicUrl(file, compilation) {
+  getPublicUrl(file: string, compilation: Webpack.Compilation) {
     let publicPath = compilation.mainTemplate.getPublicPath({ hash: compilation.hash }) || '';
 
     if (publicPath && publicPath.substr(-1) !== '/') {
@@ -25,7 +26,7 @@ class WebpackExternalPlugin {
     return getChunkPath(publicPath, { name: file, showHash: this.options.hash, hash: compilation.hash });
   }
 
-  createChunk(names, id, compilation) {
+  createChunk(names: string[], id: number, compilation: Webpack.Compilation) {
     const name = names[0];
 
     const { outputOptions } = compilation;

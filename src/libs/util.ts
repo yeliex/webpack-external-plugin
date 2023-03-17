@@ -75,7 +75,7 @@ export const getVersions = () => {
 };
 
 // webpack/lib/TemplatedPathPlugin.js#93
-export const getFileName = (path, { name, hash, id } = {}) => {
+export const getFileName = (path, { name, hash, id }: Record<string, string> = {}) => {
   return path
     .replace(REGEXP_HASH, withHashLength(getReplacer(hash)))
     .replace(REGEXP_ID, getReplacer(id))
